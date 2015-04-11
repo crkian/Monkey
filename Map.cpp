@@ -5,6 +5,7 @@
 
 static const int ROOM_MAX_SIZE = 12;
 static const int ROOM_MIN_SIZE = 6;
+static const int MAX_ROOM_MONSTERS=3;
 
 class BspListener : public ITCODBspCallback {
 private :
@@ -72,23 +73,54 @@ void Map::dig(int x1, int y1, int x2, int y2) {
 
 //First we dig the room, then put either the player in its center (only for the first room) or some NPC in 25% of other rooms. We're using here libtcod's random number generator.
 
+void Map::addMonster(int x, int y){
+	TCODRandom *rng=TCODRandom::getInstance();
+	if(rng->getInt(0,100)<80){
+		//create orc 80% of chance in define
+		engine.actors.push(new Actor(x,y,'o',"orc", TCODColor::desaturatedGreen));
+	} else {
+		//now the troll
+		engine.actors.push(new Actor(x,y,'T',"troll", TCODColor::darkerGreen));
+	}
+}
 void Map::createRoom(bool first, int x1, int y1, int x2, int y2) {
-    dig (x1,y1,x2,y2);
-    if ( first ) {
-        // put the player in the first room
-        engine.player->x=(x1+x2)/2;
-        engine.player->y=(y1+y2)/2;
-    } else {
-        TCODRandom *rng=TCODRandom::getInstance();
-        if ( rng->getInt(0,3)==0 ) {
-            engine.actors.push(new Actor((x1+x2)/2,(y1+y2)/2,'@',
-                TCODColor::yellow));
-        }
-    }
+	dig (x1,y1,x2,y2);
+	if ( first ) {
+		// put the player in the first room
+		engine.player->x=(x1+x2)/2;
+		engine.player->y=(y1+y2)/2;
+	} else {
+		TCODRandom *rng=TCODRandom::getInstance();
+		int nbMonsters=rng->getInt(0,MAX_ROOM_MONSTERS);
+		while (nbMonsters > 0) {
+			int x=rng->getInt(x1,x2);
+			int y=rng->getInt(y1,y2);
+			if ( canWalk(x,y) ) {
+				addMonster(x,y);
+			}
+			nbMonsters--;
+		}
+	}
 }
 
 bool Map::isWall(int x, int y) const {
 	return !map->isWalkable(x,y);
+}
+
+bool Map::canWalk(int x, int y) const{
+	if(isWall(x,y)){
+		//is the wall
+		return false;
+	}
+	for (Actor **iterator=engine.actors.begin();
+		iterator!=engine.actors.end();iterator++){
+			Actor *actor=*iterator;
+			if(actor->x==x && actor->y ==y){
+				//Someone else dont walk
+				return false;
+			}
+	}
+	return true;
 }
 
 bool Map::isExplored(int x,int y) const{
@@ -116,13 +148,13 @@ void Map::render() const {
 
 	for (int x=0; x < width; x++){
 		for (int y=0; y <height; y++){
-        if ( isInFov(x,y) ) {
-            TCODConsole::root->setCharBackground(x,y,
-                isWall(x,y) ? lightWall :lightGround );
-        } else if ( isExplored(x,y) ) {
-            TCODConsole::root->setCharBackground(x,y,
-                isWall(x,y) ? darkWall : darkGround );
-        }
+			if ( isInFov(x,y) ) {
+				TCODConsole::root->setCharBackground(x,y,
+					isWall(x,y) ? lightWall :lightGround );
+			} else if ( isExplored(x,y) ) {
+				TCODConsole::root->setCharBackground(x,y,
+					isWall(x,y) ? darkWall : darkGround );
+			}
 		}
 	}
 }

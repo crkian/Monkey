@@ -1,11 +1,14 @@
 class Actor {
 public :
-	int x,y; //position on the map
-	int ch; // ascii code
-	TCODColor col; // the colour
-
-	Actor(int x, int y, int ch, const TCODColor &col);
-	void render() const;
+    int x,y; // position on map
+    int ch; // ascii code
+    TCODColor col; // color
+	const char *name; // the actor's name
+	 
+	Actor(int x, int y, int ch, const char *name, const TCODColor &col);
+	void update();
+	bool moveOrAttack(int x,int y);
+    void render() const;
 };
 
 // added as an int so you can have 256 different characters
