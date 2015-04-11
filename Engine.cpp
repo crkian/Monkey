@@ -7,7 +7,8 @@ Engine::Engine(int screenWidth, int screenHeight) : gameStatus(STARTUP),fovRadiu
     player->destructible=new PlayerDestructible(30,2,"your cadaver");
     player->attacker=new Attacker(5);
     player->ai = new PlayerAi();
-    actors.push(player);
+    player->container=new Container(26);
+	actors.push(player);
     map = new Map(80,43);
     gui = new Gui();
     gui->message(TCODColor::red, 

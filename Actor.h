@@ -8,8 +8,12 @@ public :
 	Attacker *attacker; // something that deals damages
 	Destructible *destructible; // something that can be damaged
 	Ai *ai; // something self-updating
-	 
+	Pickable *pickable; //can be picked and used
+	Container *container; //can contain something 
+
+
 	Actor(int x, int y, int ch, const char *name, const TCODColor &col);
+	~Actor();
 	void update();
     void render() const;
 };
