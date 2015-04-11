@@ -4,7 +4,7 @@
 #include "Engine.h"
 //Engine.hpp is depending on all three previous headers since it references TCODList, Actor and Map.
 
-Engine::Engine() {
+Engine::Engine() : fovRadius(10),computeFov(true){
 	TCODConsole::initRoot(80,50,"Monkey",false);
 	player = new Actor(40,25,'@',TCODColor::white);
 	actors.push(player);
@@ -26,25 +26,33 @@ void Engine::update() {
 	switch(key.vk) {
 	case TCODK_UP : 
 		if ( ! map->isWall(player->x,player->y-1)) {
-			player->y--;   
+			player->y--; 
+			computeFov=true;
 		}
 		break;
 	case TCODK_DOWN : 
 		if ( ! map->isWall(player->x,player->y+1)) {
 			player->y++;
+			computeFov=true;
 		}
 		break;
 	case TCODK_LEFT : 
 		if ( ! map->isWall(player->x-1,player->y)) {
 			player->x--;
+			computeFov=true;
 		}
 		break;
 	case TCODK_RIGHT : 
 		if ( ! map->isWall(player->x+1,player->y)) {
 			player->x++;
+			computeFov=true;
 		}
 		break;
 	default:break;
+	}
+	if(computeFov){
+		map->computeFov();
+		computeFov=false;
 	}
 }
 
@@ -55,7 +63,10 @@ void Engine::render() {
 	// draw the actors
 	for (Actor **iterator=actors.begin(); 
 		iterator != actors.end(); iterator++) {
-			(*iterator)->render();
+			Actor *actor=*iterator;
+			if ( map->isInFov(actor->x,actor->y) ) {
+				actor->render();
+			}
 	}
 }
-	//The TCODList begin() function returns a pointer to the first element. Since our elements are already Actor pointers, we get a pointer to a pointer to an Actor : Actor **. We use the indirection operator (*iterator) to retrieve the object behind the pointer (the actual Actor pointer) and the dereference operator -> to access a member on the pointed object (the actual Actor). 
+//The TCODList begin() function returns a pointer to the first element. Since our elements are already Actor pointers, we get a pointer to a pointer to an Actor : Actor **. We use the indirection operator (*iterator) to retrieve the object behind the pointer (the actual Actor pointer) and the dereference operator -> to access a member on the pointed object (the actual Actor). 
