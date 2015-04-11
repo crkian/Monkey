@@ -31,8 +31,8 @@ void MonsterAi::moveOrAttack(Actor *owner, int targetx, int targety) {
 	int stepdy = (dy > 0 ? 1:-1);
 	float distance=sqrtf(dx*dx+dy*dy);
 	if ( distance >= 2 ) {
-		dx = (int)(round(dx/distance));
-		dy = (int)(round(dy/distance));
+		dx = (int)(floor(dx/distance));
+		dy = (int)(floor(dy/distance));
 		if ( engine.map->canWalk(owner->x+dx,owner->y+dy) ) {
 			owner->x += dx;
 			owner->y += dy;
@@ -84,7 +84,7 @@ bool PlayerAi::moveOrAttack(Actor *owner, int targetx,int targety) {
 		Actor *actor=*iterator;
 		if ( actor->destructible && actor->destructible->isDead()
 			 && actor->x == targetx && actor->y == targety ) {
-			printf ("There's a %s here\n",actor->name);
+			engine.gui->message(TCODColor::lightGrey,"There's a %s here",actor->name);
 		}
 	}
 	owner->x=targetx;
