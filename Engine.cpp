@@ -8,7 +8,6 @@ Engine::Engine() {
 	TCODConsole::initRoot(80,50,"Monkey",false);
 	player = new Actor(40,25,'@',TCODColor::white);
 	actors.push(player);
-	actors.push(new Actor(60,13,'@',TCODColor::yellow));
 	map = new Map(80,45);
 }
 // allocate two Actor objects, one for the player and one for some NPC, and store the object adresses in the actors list. The Map object is also dynamically allocated.
