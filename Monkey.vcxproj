@@ -84,6 +84,7 @@
     <ClCompile Include="Gui.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="Persistent.cpp" />
     <ClCompile Include="Pickable.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -96,7 +97,11 @@
     <ClInclude Include="Gui.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="Persistent.h" />
     <ClInclude Include="Pickable.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Images\menu_background1.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

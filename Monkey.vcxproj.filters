@@ -45,6 +45,9 @@
     <ClCompile Include="Pickable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Persistent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h">
@@ -77,5 +80,13 @@
     <ClInclude Include="Pickable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Persistent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Images\menu_background1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
