@@ -26,7 +26,7 @@ void Gui::render() {
 	con->clear();
 
 	// draw the health bar
-	renderBar(1,1,BAR_WIDTH,"HP",engine.player->destructible->hp,
+	renderBar(1,1,BAR_WIDTH,"Health",engine.player->destructible->hp,
 		engine.player->destructible->maxHp,
 		TCODColor::lightRed,TCODColor::darkerRed);
 
@@ -56,7 +56,7 @@ void Gui::render() {
 
 	// dungeon level
 	con->setDefaultForeground(TCODColor::white);
-	con->print(3,3,"Dungeon level %d",engine.level);
+	con->print(3,3,"Shaolin level %d",engine.level);
 
 	// blit the GUI console on the root console
 	TCODConsole::blit(con,0,0,engine.screenWidth,PANEL_HEIGHT,
@@ -191,7 +191,7 @@ Menu::MenuItemCode Menu::pick(DisplayMode mode) {
 			} else {
 				TCODConsole::root->setDefaultForeground(TCODColor::lightGrey);
 			}
-			TCODConsole::root->print(menux,menuy+currentItem*3,(*it)->label);
+			TCODConsole::root->print(menux,menuy+currentItem*4,(*it)->label);
 			currentItem++;
 		}
 		TCODConsole::flush();
